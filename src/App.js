@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import ParticlesBg from 'particles-bg'
-import Clarifai from 'clarifai';
-import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+// import Clarifai from 'clarifai';
+// import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
+import Signin from './components/Signin/Signin';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import './App.css';
 
-const app = new Clarifai.App({
-  apiKey: '0644c7ed92ce44158e2c28f69726c7ef'
-});
+// const app = new Clarifai.App({
+//   apiKey: 'YOUR API KEY HERE'
+// });
 
 class App extends Component {
   constructor() {
@@ -19,6 +20,15 @@ class App extends Component {
       input: '',
       imageUrl: '',
       box: {},
+      route: 'signin',
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     }
   }
 
@@ -45,15 +55,11 @@ class App extends Component {
     this.setState=({input: event.target.value});
   }
   
-  onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input});
-    app.models
-    .predict(
-      Clarifai.FACE_DETECT_MODEL,
-      this.state.input)
-    .then(response => this.calculateFaceLocation(response))
-    .catch(err => console.log(err));
-}
+//   onButtonSubmit = () => {
+//     this.setState({imageUrl: this.state.input});
+//     app.models.predict(Clarifai.FACE_DETECT_MODEL,this.state.input).then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
+//     .catch(err => console.log(err));
+// }
 
 
   render () {
@@ -61,12 +67,13 @@ class App extends Component {
       <div className="App">
         <ParticlesBg type="lines" bg={true} />
         <Navigation />
+        <Signin />
         <Logo />
         <Rank />
         <ImageLinkForm 
           onInputChange={this.onInputChange} 
           onButtonSubmit={this.onButtonSubmit}/>
-        <FaceRecognition imageUrl={this.state.imageUrl} />
+        {/* <FaceRecognition imageUrl={this.state.imageUrl} /> */}
       </div>
     );
   }
